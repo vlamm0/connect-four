@@ -24,7 +24,6 @@ describe Game do
         expect(sol).to eq(1)
       end
     end
-    # cur
     context 'when unavailable' do
       before do
         allow(test_game).to receive(:go).and_return(true)
@@ -66,10 +65,9 @@ describe Game do
       end
     end
   end
-  # ****YOU ARE TRYING TO USE INTS BUT IT NEEDS TO RE
   describe '#valid_pos?' do
     let(:valid_positions) { [[0, 6], [1, 5], [2, 4], [3, 3], [4, 2], [5, 1], [4, 0]] }
-    let(:invalid_positions) { [[0, 6], [1, 5], [2, 4], [3, 3], [4, 7], [5, 1], [4, 0]] }
+    let(:invalid_positions) { [[0, 7], [1, 100], [100, 4], [-3, 3], [4, 8], [5, -1], [6, 0]] }
     context 'when valid' do
       it 'returns true' do
         valid_positions.each { |pos| expect(test_game.valid_pos?(pos)).to be true }
@@ -78,6 +76,27 @@ describe Game do
     context 'when invalid' do
       it 'returns false' do
         invalid_positions.each { |pos| expect(test_game.valid_pos?(pos)).to be false }
+      end
+    end
+  end
+  describe '#crawl' do
+    context 'when valid position and curr players piece' do
+      before do
+        allow(test_game).to receive(:valid_pos?).and_return(true, false)
+        allow(test_game).to receive(:data).and_return(white_piece)
+      end
+      it 'increases sum' do
+        expect(test_game.crawl([0, 0]) { [0, 0] }).to eq(1)
+      end
+    end
+    context 'when invalid position or different piece' do
+      before do
+        allow(test_game).to receive(:valid_pos?).and_return(true, false)
+        allow(test_game).to receive(:data).and_return(black_piece, white_piece)
+      end
+      it 'does not change sum' do
+        expect(test_game.crawl([0, 0]) { [0, 0] }).to eq(0)
+        expect(test_game.crawl([0, 0]) { [0, 0] }).to eq(0)
       end
     end
   end
