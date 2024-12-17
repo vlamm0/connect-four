@@ -100,4 +100,24 @@ describe Game do
       end
     end
   end
+  describe '#diagonal' do
+    before do
+      allow(test_game).to receive(:crawl).and_return(1, 0, 0, 0, 0, 1, 2, 3)
+    end
+    it 'returns appropriate diagonal' do
+      expect(test_game.diagonal([0, 0])).to eq(1)
+      expect(test_game.diagonal([0, 0])).to eq(5)
+    end
+  end
+  describe '#continue_game' do
+    before do
+      allow(test_game).to receive(:go).and_return(nil)
+    end
+    it 'updates turn' do
+      before = test_game.instance_variable_get(:@turn)
+      test_game.continue_game
+      after = test_game.instance_variable_get(:@turn)
+      expect(before).to eq(after - 1)
+    end
+  end
 end
