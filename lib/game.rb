@@ -35,6 +35,7 @@ class Game
     go
   end
 
+  # move to end 1
   def go(start = nil)
     display_board if start == true
     input = curr_player.prompt
@@ -58,12 +59,12 @@ class Game
     sum
   end
 
-  def vert(pos)
+  def vertical(pos)
     up = crawl(pos) { |new_pos| [new_pos[0] + 1, new_pos[1]] }
     crawl([pos[0] - 1, pos[1]], up) { |new_pos| [new_pos[0] - 1, new_pos[1]] }
   end
 
-  def hor(pos)
+  def horizontal(pos)
     left = crawl(pos) { |new_pos| [new_pos[0], new_pos[1] - 1] }
     crawl([pos[0], pos[1] + 1], left) { |new_pos| [new_pos[0], new_pos[1] + 1] }
   end
@@ -72,7 +73,7 @@ class Game
     crawl(pos) { |new_pos| [new_pos[0] + direction[0], new_pos[1] + direction[1]] }
   end
 
-  def diag(pos)
+  def diagonal(pos)
     # Check the first diagonal (top-left to bottom-right)
     cross1 = crawl_diag(pos, [1, 1]) + crawl_diag([pos[0] - 1, pos[1] - 1], [-1, -1])
     # Check the second diagonal (top-right to bottom-left)
@@ -81,7 +82,7 @@ class Game
   end
 
   def dfs(pos)
-    arr = [vert(pos), hor(pos), diag(pos)]
+    arr = [vertical(pos), horizontal(pos), diaganol(pos)]
     arr.max >= 4
   end
 
@@ -96,9 +97,7 @@ class Game
   end
 end
 
-new_game = Game.new
+# new_game = Game.new
 # white_piece = new_game.players[0].icon
 # black_piece = new_game.players[1].icon
-new_game.go(true)
-
-# connect? missing arg
+# new_game.go(true)
